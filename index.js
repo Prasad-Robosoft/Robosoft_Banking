@@ -104,7 +104,7 @@ class fixed_recurr extends Bank                 //fixed and reccuring only have 
 
 
 
-class fixed_recurr_deposit extends Bank
+class fixed_recurr_deposit extends fixed_recurr
 {
     constructor(transaction_amt,acc_holder,initial_amt,email,phone,date)
     {
@@ -182,10 +182,10 @@ acc_prasad = new Bank("Prasad",40000,"Prasad@gmail.com",90005600)   //to create 
 console.log(acc_prasad)
 
 casa_depo = new Casa_deposit(1000,"Parsad",40000,"Prasad@gmail.com",90005600)  //casa deposit
-casa_depo.deposit(1000)
+casa_depo.deposit()
 
 casa_depo = new Casa_deposit(1000,"Parsad",40000,"Prasad@gmail.com",90005600) //casa withdrawal
-casa_depo.withdrawal(1000)
+casa_depo.withdrawal()
 
 casa = new Casa("Prasad",40000,"Prasad@gmail.com",90005600,"current")      //csa balance current after adding interest
 casa.balance()
