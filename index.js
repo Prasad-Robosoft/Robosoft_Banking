@@ -59,12 +59,14 @@ class Casa_deposit extends Bank          //updates the CASA account balance has 
     {
         this.initial_amt = this.initial_amt + this.transaction_amt
         console.log(`The updated balance after deposit is ${this.initial_amt}` )
+        statement.push(`\nAccount credited with ${this.transaction_amt} on ${new Date()}`)
     }
 
     withdrawal()
     {
         this.initial_amt = this.initial_amt - this.transaction_amt
         console.log(`The updated balance after withdrawal is ${this.initial_amt}`)
+        statement.push(`\nAccount debited with ${this.transaction_amt} on ${new Date()}`)
     }
 
 }
@@ -114,6 +116,7 @@ class fixed_recurr_deposit extends Bank
     {
         this.initial_amt = this.initial_amt + this.transaction_amt
         console.log(`balance after deposit is ${this.initial_amt}`)
+        statement.push(`\nAccount credited with ${this.transaction_amt} on ${new Date()}`)
     }
 }
 
@@ -150,7 +153,30 @@ class Loan extends Bank
 
 }
 
+class Account_Manager extends Bank
+{
+    constructor(acc_holder,initial_amt,email,phone,date)
+    {
+        super(acc_holder,initial_amt,email,phone,date)
+    }
 
+    Account_details()
+    {
+        console.log(this)
+    }
+
+    Account_statement()
+    {
+        console.log(`Account statement is ${statement}`)
+    }
+
+    Account_balance()
+    {
+        console.log(`Account balance is ${this.initial_amt}`)
+    }
+}
+
+const statement = []
 
 acc_prasad = new Bank("Prasad",40000,"Prasad@gmail.com",90005600)   //to create new account
 console.log(acc_prasad)
@@ -184,3 +210,8 @@ loan.deposit()
 
 loan = new Loan(100000,"personal","Prasad",40000,"Prasad@gmail.com",90005600)   //personal personal and vehicle after adding intrest
 loan.deposit()
+
+
+acc_man = new Account_Manager("Prasad",40000,"Prasad@gmail.com",90005600)
+acc_man.Account_details()
+acc_man.Account_statement()
