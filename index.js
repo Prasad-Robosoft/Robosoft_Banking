@@ -9,7 +9,7 @@ const personalLoan_accounts = []
 let i=0
 
 class Bank{                                             //account creation
-    constructor(userName,initial_amt,mail)
+    constructor(userName,initial_amt,mail,statement=[])
     {
         this.userName = userName
         let account_num = Math.floor(Math.pow(10, 13-1) + Math.random() * (Math.pow(10, 13) - Math.pow(10, 13-1) - 1)) 
@@ -17,6 +17,7 @@ class Bank{                                             //account creation
         this.initial_amt = initial_amt
         this.mail = mail
         this.date = new Date("July 21, 2014 01:15:00")
+        this.statement = statement
     }
 
     add()
@@ -32,18 +33,16 @@ class Bank{                                             //account creation
 
 class Savings {                                         //operations for savings account
 
-    constructor(user,transaction_amt,statement)
+    constructor(user,transaction_amt)
     {
         this.user = user
         this.transaction_amt = transaction_amt
-        this.statement = statement
-
     }
  
     deposit()
     {
             database.forEach((item)=>{
-            if(item.userName=="Prasad")
+            if(item.userName==this.user)
             {
                savings_accounts.push(item)
             }
@@ -57,13 +56,11 @@ class Savings {                                         //operations for savings
                 savings_accounts[i].initial_amt = savings_accounts[i].initial_amt + this.transaction_amt
 
                 database.forEach((item)=>{
-                    if(item.userName=="Prasad")
+                    if(item.userName==this.user)
                     {
-                       this.statement.push(`Amount ${this.transaction_amt} credited to the savings account on ${new Date()}`)
+                        savings_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the savings account on ${new Date()}`)   //pushing statment
                     }
                 })
-
-                console.log("statement is" ,this.statement)
             }
         }
 
@@ -82,7 +79,7 @@ class Savings {                                         //operations for savings
         {
             if(savings_accounts[i].userName==this.user)
             {
-                let pre_date = savings_accounts[i].date
+                let pre_date = savings_accounts[i].date                 //comparing current date with date of account creation
                 let pre_year = pre_date.getFullYear()
                 let cur_year = cur_date.getFullYear()
                 let diff = cur_year -  pre_year
@@ -102,7 +99,18 @@ class Savings {                                         //operations for savings
         {
             if(current_accounts[i].userName==this.user)
             {
-                current_accounts[i].initial_amt = current_accounts[i].initial_amt + this.transaction_amt
+                savings_accounts[i].initial_amt = savings_accounts[i].initial_amt + this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName==this.user)
+                    {
+                        database.forEach((item)=>{
+                            if(item.userName==this.user)
+                            {
+                                savings_accounts[i].statement.push(`Amount ${this.transaction_amt} debited to the savings account on ${new Date()}`)    //pushing statment
+                            }
+                        })
+                    }
+                })
             }
         }
 
@@ -112,20 +120,19 @@ class Savings {                                         //operations for savings
 }
 
 
-class Current
+class Current                                   //has features of depositing, withdrawal and checking balance
 {
-    constructor(user,transaction_amt,statement)
+    constructor(user,transaction_amt)
     {
         this.user = user
         this.transaction_amt = transaction_amt
-        this.statement = statement
     }
 
 
     deposit()
     {
         database.forEach((item)=>{
-            if(item.userName=="Prasad")
+            if(item.userName==this.user)
             {
                current_accounts.push(item)
             }
@@ -137,9 +144,9 @@ class Current
             {
                 current_accounts[i].initial_amt = current_accounts[i].initial_amt + this.transaction_amt
                 database.forEach((item)=>{
-                    if(item.userName=="Prasad")
+                    if(item.userName==this.user)
                     {
-                       this.statement.push(`Amount ${this.transaction_amt} credited to the current account on ${new Date()}`)
+                        current_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the current account on ${new Date()}`)   //pushing statment
                     }
                 })
             }
@@ -163,7 +170,7 @@ class Current
                 let cur_year = cur_date.getFullYear()
                 let diff = cur_year -  pre_year
                 
-                let intrest = (current_accounts[i].initial_amt*diff*3.5)/100
+                let intrest = (current_accounts[i].initial_amt*diff*3.5)/100                            
                 let total_balance = current_accounts[i].initial_amt + intrest
                 console.log(`Your total balance in current account is ${total_balance}`)
 
@@ -179,6 +186,12 @@ class Current
             if(current_accounts[i].userName==this.user)
             {
                 current_accounts[i].initial_amt = current_accounts[i].initial_amt - this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName==this.user)
+                    {
+                        current_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the savings account on ${new Date()}`)   //pushing statment
+                    }
+                })
             }
         }
     }
@@ -186,7 +199,7 @@ class Current
 }
 
 
-class Fixed
+class Fixed                                                         //has features of depositing, withdrawal and checking balance
 {
     constructor(user,transaction_amt)
     {
@@ -209,6 +222,12 @@ class Fixed
             if([i].userName==this.user)
             {
                 fixed_accounts[i].initial_amt = fixed_accounts[i].initial_amt + this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName==this.user)
+                    {
+                        fixed_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the fixed account on ${new Date()}`)   //pushing statment
+                    }
+                })
             }
         }
 
@@ -240,7 +259,7 @@ class Fixed
 }
 
 
-class Recurring
+class Recurring                                                     //has features of depositing and checking balance but not withdrawal
 {
     constructor(user,transaction_amt)
     {
@@ -263,6 +282,12 @@ class Recurring
             if(recurring_accounts[i].userName==this.user)
             {
                 recurring_accounts[i].initial_amt = recurring_accounts[i].initial_amt + this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName==this.user)
+                    {
+                        recurring_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the recurring account on ${new Date()}`)   //pushing statment
+                    }
+                })
             }
         }
 
@@ -293,7 +318,7 @@ class Recurring
 
 }
 
-class homeLoan
+class homeLoan                                      //has features of depositing and checking balance but not withdrawal
 {
     constructor(user,transaction_amt)
     {
@@ -316,6 +341,12 @@ class homeLoan
             if([i].userName==this.user)
             {
                 homeLoan_accounts[i].initial_amt = homeLoan_accounts[i].initial_amt + this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName==this.user)
+                    {
+                        homeLoan_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the home loan account on ${new Date()}`)    //pushing statment
+                    }
+                })
             }
         }
 
@@ -345,7 +376,7 @@ class homeLoan
     }
 }
 
-class VehicleLoan
+class VehicleLoan       //has features of depositing and checking balance but not withdrawal
 {
     constructor(user,transaction_amt)
     {
@@ -368,6 +399,12 @@ class VehicleLoan
             if([i].userName==this.user)
             {
                 vehicleLoan_accounts[i].initial_amt = vehicleLoan_accounts[i].initial_amt + this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName==this.user)
+                    {
+                        vehicleLoan_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the vehicle loan account on ${new Date()}`)  //pushing statment
+                    }
+                })
             }
         }
 
@@ -382,7 +419,7 @@ class VehicleLoan
         {
             if(vehicleLoan_accounts[i].userName==this.user)
             {
-                let pre_date = vehicleLoan_accounts[i].date
+                let pre_date = vehicleLoan_accounts[i].date                     //comparing current date with date of account creation
                 let pre_year = pre_date.getFullYear()
                 let cur_year = cur_date.getFullYear()
                 let diff = cur_year -  pre_year
@@ -397,7 +434,7 @@ class VehicleLoan
     }
 }
 
-class PersonalLoan
+class PersonalLoan              //has features of depositing and checking balance but not withdrawal
 {
     constructor(user,transaction_amt)
     {
@@ -420,23 +457,28 @@ class PersonalLoan
             if([i].userName==this.user)
             {
                 personalLoan_accounts[i].initial_amt = personalLoan_accounts[i].initial_amt + this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName==this.user)
+                    {
+                        personalLoan_accounts[i].statement.push(`Amount ${this.transaction_amt} credited to the Personal loan account on ${new Date()}`) //pushing statment
+                    }
+                })
             }
         }
 
         console.log(`Amount ${this.transaction_amt} deposited For Home Loan Account`)
         
-        console.log(homeLoan_accounts)
     }
 
     balance()
     {
         let cur_date = new Date()
     
-        for(let i=0;i<personalLoan_accounts.length;i++)
+        for(let i=0;i<personalLoan_accounts.length;i++)                                     
         {
             if(personalLoan_accounts[i].userName==this.user)
             {
-                let pre_date = personalLoan_accounts[i].date
+                let pre_date = personalLoan_accounts[i].date                            //comparing current date with date of account creation
                 let pre_year = pre_date.getFullYear()
                 let cur_year = cur_date.getFullYear()
                 let diff = cur_year -  pre_year
@@ -453,7 +495,7 @@ class PersonalLoan
 }
 
 
-class Account_manager
+class Account_manager //Gives list all accounts in perticular type including statements
 {
     savings_list()
     {
@@ -492,42 +534,48 @@ class Account_manager
 }
 
 
-const person1 = new Bank("Prasad",1,"prasad@gmail.com")
-const person2 = new Bank("Ram",20000,"Ram@gmail.com")
-let count1 = person1.add()
-let count2 = person2.add()
+const person1 = new Bank("Prasad",1,"prasad@gmail.com") //account creation for Prasad
+const person2 = new Bank("Ram",20000,"Ram@gmail.com")   //account creation for Ram
+let count1 = person1.add()                                
+let count2 = person2.add()                                
 console.log(database[count2-1].userName)
 
 
-const savings_acc = new Savings("Prasad",10000,[])
-savings_acc.deposit()
-savings_acc.balance()
-savings_acc.withdrawal()
+const savings_acc = new Savings("Prasad",10000)
+savings_acc.deposit()                                           //adding deposits
+savings_acc.balance()                                           //checking balanace
+savings_acc.withdrawal()                                        //debiting cash
 
-const current_acc = new Current("Prasad",2000,[])
+const current_acc = new Current("Prasad",2000)
 current_acc.deposit()
 current_acc.balance()
 current_acc.withdrawal()
 
-const fixed_acc = new Fixed("Prasad",50000,[])
+const fixed_acc = new Fixed("Prasad",50000)
 fixed_acc.deposit()
 fixed_acc.balance()
 
-const recurr_acc = new Recurring("Prasad",90000,[])
+const recurr_acc = new Recurring("Prasad",90000)
 recurr_acc.deposit()
 recurr_acc.balance()
 
-const home_acc = new homeLoan("Prasad",50000,[])
+const home_acc = new homeLoan("Prasad",50000)
 home_acc.deposit()
 home_acc.balance()
 
-const vehicle_acc = new VehicleLoan("Prasad",50000,[])
+const vehicle_acc = new VehicleLoan("Prasad",50000)
 vehicle_acc.deposit()
 vehicle_acc.balance()
 
-const personal_acc = new PersonalLoan("Prasad",50000,[])
+const personal_acc = new PersonalLoan("Prasad",50000)
 personal_acc.deposit()
 personal_acc.balance()
 
-const manager = new Account_manager()
+const manager = new Account_manager([])
 manager.savings_list()
+manager.currrent_list()
+manager.fixed_list()
+manager.recurring_list()
+manager.home_list()
+manager.vehicle_list()
+manager.personal_list()
