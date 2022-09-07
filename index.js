@@ -1,217 +1,533 @@
-class Bank
-{
+const database = []
+const savings_accounts = []
+const current_accounts = []
+const fixed_accounts = []
+const recurring_accounts = []
+const homeLoan_accounts = []
+const vehicleLoan_accounts = []
+const personalLoan_accounts = [] 
+let i=0
 
-    constructor(acc_holder,initial_amt,email,phone,date) //constructor initialization with unique account number,holdername,initial amoount,email and phone 
+class Bank{                                             //account creation
+    constructor(userName,initial_amt,mail)
     {
+        this.userName = userName
         let account_num = Math.floor(Math.pow(10, 13-1) + Math.random() * (Math.pow(10, 13) - Math.pow(10, 13-1) - 1)) 
         this.account_num = account_num
-        this.acc_holder = acc_holder
         this.initial_amt = initial_amt
-        this.email = email
-        this.phone = phone
-        date = new Date("July 21, 2014 01:15:00")
-        this.date = date
+        this.mail = mail
+        this.date = new Date("July 21, 2014 01:15:00")
+    }
+
+    add()
+    {
+        i++
+        let temp_obj = this
+        database.push(temp_obj)
+        return i
     }
 
 }
 
 
-class Casa extends Bank    //caluculates intrest for each type of loan
-{
-    constructor(acc_holder,initial_amt,email,phone,type)
+class Savings {                                         //operations for savings account
+
+    constructor(user,transaction_amt,statement)
     {
-        super(acc_holder,initial_amt,email,phone)
-        this.type = type
+        this.user = user
+        this.transaction_amt = transaction_amt
+        this.statement = statement
+
+    }
+ 
+    deposit()
+    {
+            database.forEach((item)=>{
+            if(item.userName=="Prasad")
+            {
+               savings_accounts.push(item)
+            }
+        })
+
+
+        for(let i=0;i<savings_accounts.length;i++)
+        {
+            if(savings_accounts[i].userName==this.user)
+            {
+                savings_accounts[i].initial_amt = savings_accounts[i].initial_amt + this.transaction_amt
+
+                database.forEach((item)=>{
+                    if(item.userName=="Prasad")
+                    {
+                       this.statement.push(`Amount ${this.transaction_amt} credited to the savings account on ${new Date()}`)
+                    }
+                })
+
+                console.log("statement is" ,this.statement)
+            }
+        }
+
+
+
+        console.log(`Amount ${this.transaction_amt} credited to the savings account on ${new Date()}`)
+        
+        
     }
 
     balance()
     {
         let cur_date = new Date()
-        let pre_date = this.date
-        let pre_year = pre_date.getFullYear()
-        let cur_year = cur_date.getFullYear()
-        let diff = cur_year -  pre_year
-        
-        if(this.type=="savings")
+    
+        for(let i=0;i<savings_accounts.length;i++)
         {
-            let intrest = (this.initial_amt*diff*3.5)/100
-            let total_balance = this.initial_amt + intrest
-            console.log(`Your total balance in savings account is ${total_balance}`)
-        }else{
-            let intrest = (this.initial_amt*diff*2.5)/100
-            let total_balance = this.initial_amt + intrest
-            console.log(`Your total balance in current account is ${total_balance}`)
+            if(savings_accounts[i].userName==this.user)
+            {
+                let pre_date = savings_accounts[i].date
+                let pre_year = pre_date.getFullYear()
+                let cur_year = cur_date.getFullYear()
+                let diff = cur_year -  pre_year
+                
+                let intrest = (savings_accounts[i].initial_amt*diff*3.5)/100
+                let total_balance = savings_accounts[i].initial_amt + intrest
+                console.log(`Your total balance in savings account is ${total_balance}`)
+
+            }
         }
-    }
-
-}
-
-
-class Casa_deposit extends Bank          //updates the CASA account balance has both withdrawal and deposit
-{
-    constructor(transaction_amt,acc_holder,initial_amt,email,phone,date)
-    {
-        super(acc_holder,initial_amt,email,phone,date)
-        this.transaction_amt = transaction_amt
-    }
-
-    deposit()
-    {
-        this.initial_amt = this.initial_amt + this.transaction_amt
-        console.log(`The updated balance after deposit is ${this.initial_amt}` )
-        statement.push(`\nAccount credited with ${this.transaction_amt} on ${new Date()}`)
+  
     }
 
     withdrawal()
     {
-        this.initial_amt = this.initial_amt - this.transaction_amt
-        console.log(`The updated balance after withdrawal is ${this.initial_amt}`)
-        statement.push(`\nAccount debited with ${this.transaction_amt} on ${new Date()}`)
+        for(let i=0;i<current_accounts.length;i++)
+        {
+            if(current_accounts[i].userName==this.user)
+            {
+                current_accounts[i].initial_amt = current_accounts[i].initial_amt + this.transaction_amt
+            }
+        }
+
+        console.log(`Amount ${this.transaction_amt} debited to the savings account`)
+    }
+ 
+}
+
+
+class Current
+{
+    constructor(user,transaction_amt,statement)
+    {
+        this.user = user
+        this.transaction_amt = transaction_amt
+        this.statement = statement
+    }
+
+
+    deposit()
+    {
+        database.forEach((item)=>{
+            if(item.userName=="Prasad")
+            {
+               current_accounts.push(item)
+            }
+        })
+
+        for(let i=0;i<current_accounts.length;i++)
+        {
+            if(current_accounts[i].userName==this.user)
+            {
+                current_accounts[i].initial_amt = current_accounts[i].initial_amt + this.transaction_amt
+                database.forEach((item)=>{
+                    if(item.userName=="Prasad")
+                    {
+                       this.statement.push(`Amount ${this.transaction_amt} credited to the current account on ${new Date()}`)
+                    }
+                })
+            }
+        }
+
+        console.log(`Amount ${this.transaction_amt} credited to the current account on ${new Date()}`)
+    }
+
+ 
+
+    balance()
+    {
+        let cur_date = new Date()
+    
+        for(let i=0;i<current_accounts.length;i++)
+        {
+            if(current_accounts[i].userName==this.user)
+            {
+                let pre_date = current_accounts[i].date
+                let pre_year = pre_date.getFullYear()
+                let cur_year = cur_date.getFullYear()
+                let diff = cur_year -  pre_year
+                
+                let intrest = (current_accounts[i].initial_amt*diff*3.5)/100
+                let total_balance = current_accounts[i].initial_amt + intrest
+                console.log(`Your total balance in current account is ${total_balance}`)
+
+            }
+        }
+ 
+    }
+
+    withdrawal()
+    {
+        for(let i=0;i<current_accounts.length;i++)
+        {
+            if(current_accounts[i].userName==this.user)
+            {
+                current_accounts[i].initial_amt = current_accounts[i].initial_amt - this.transaction_amt
+            }
+        }
     }
 
 }
 
 
-
-class fixed_recurr extends Bank                 //fixed and reccuring only have deposits
+class Fixed
 {
-    constructor(acc_holder,initial_amt,email,phone,type)
+    constructor(user,transaction_amt)
     {
-        super(acc_holder,initial_amt,email,phone)
-        this.type = type
+        this.user = user
+        this.transaction_amt = transaction_amt
+    }
+
+    deposit()
+    {
+            database.forEach((item)=>{
+            if(item.userName=="Prasad")
+            {
+                fixed_accounts.push(item)
+            }
+        })
+
+
+        for(let i=0;i<fixed_accounts.length;i++)
+        {
+            if([i].userName==this.user)
+            {
+                fixed_accounts[i].initial_amt = fixed_accounts[i].initial_amt + this.transaction_amt
+            }
+        }
+
+        console.log(`Amount ${this.transaction_amt} deposited to the fixed account`)
     }
 
     balance()
     {
         let cur_date = new Date()
-        let pre_date = this.date
-        let pre_year = pre_date.getFullYear()
-        let cur_year = cur_date.getFullYear()
-        let diff = cur_year -  pre_year
+    
+        for(let i=0;i<fixed_accounts.length;i++)
+        {
+            if(fixed_accounts[i].userName==this.user)
+            {
+                let pre_date = fixed_accounts[i].date
+                let pre_year = pre_date.getFullYear()
+                let cur_year = cur_date.getFullYear()
+                let diff = cur_year -  pre_year
+                
+                let intrest = (fixed_accounts[i].initial_amt*diff*7.5)/100
+                let total_balance = fixed_accounts[i].initial_amt + intrest
+                console.log(`Your total balance in Fixed account is ${total_balance}`)
+
+            }
+        }
+ 
+    }
+
+}
+
+
+class Recurring
+{
+    constructor(user,transaction_amt)
+    {
+        this.user = user
+        this.transaction_amt = transaction_amt
+    }
+
+    deposit()
+    {
+            database.forEach((item)=>{
+            if(item.userName=="Prasad")
+            {
+                recurring_accounts.push(item)
+            }
+        })
+
+
+        for(let i=0;i<recurring_accounts.length;i++)
+        {
+            if(recurring_accounts[i].userName==this.user)
+            {
+                recurring_accounts[i].initial_amt = recurring_accounts[i].initial_amt + this.transaction_amt
+            }
+        }
+
+        console.log(`Amount ${this.transaction_amt} deposited to the recurring account`)
+    }
+
+    balance()
+    {
+        let cur_date = new Date()
+    
+        for(let i=0;i<recurring_accounts.length;i++)
+        {
+            if(recurring_accounts[i].userName==this.user)
+            {
+                let pre_date = recurring_accounts[i].date
+                let pre_year = pre_date.getFullYear()
+                let cur_year = cur_date.getFullYear()
+                let diff = cur_year -  pre_year
+                
+                let intrest = (recurring_accounts[i].initial_amt*diff*5.5)/100
+                let total_balance = recurring_accounts[i].initial_amt + intrest
+                console.log(`Your total balance in Recurring account is ${total_balance}`)
+
+            }
+        }
+ 
+    }
+
+}
+
+class homeLoan
+{
+    constructor(user,transaction_amt)
+    {
+        this.user = user
+        this.transaction_amt = transaction_amt
+    }
+
+    deposit()
+    {
+            database.forEach((item)=>{
+            if(item.userName=="Prasad")
+            {
+                homeLoan_accounts.push(item)
+            }
+        })
+
+
+        for(let i=0;i<homeLoan_accounts.length;i++)
+        {
+            if([i].userName==this.user)
+            {
+                homeLoan_accounts[i].initial_amt = homeLoan_accounts[i].initial_amt + this.transaction_amt
+            }
+        }
+
+        console.log(`Amount ${this.transaction_amt} deposited For Home Loan Account`)
+    }
+
+    balance()
+    {
+        let cur_date = new Date()
+    
+        for(let i=0;i<homeLoan_accounts.length;i++)
+        {
+            if(homeLoan_accounts[i].userName==this.user)
+            {
+                let pre_date = homeLoan_accounts[i].date
+                let pre_year = pre_date.getFullYear()
+                let cur_year = cur_date.getFullYear()
+                let diff = cur_year -  pre_year
+                
+                let intrest = (homeLoan_accounts[i].initial_amt*diff*10.5)/100
+                let total_balance = homeLoan_accounts[i].initial_amt + intrest
+                console.log(`Your total balance in Home loan account is ${total_balance}`)
+
+            }
+        }
+ 
+    }
+}
+
+class VehicleLoan
+{
+    constructor(user,transaction_amt)
+    {
+        this.user = user
+        this.transaction_amt = transaction_amt
+    }
+
+    deposit()
+    {
+            database.forEach((item)=>{
+            if(item.userName=="Prasad")
+            {
+                vehicleLoan_accounts.push(item)
+            }
+        })
+
+
+        for(let i=0;i<vehicleLoan_accounts.length;i++)
+        {
+            if([i].userName==this.user)
+            {
+                vehicleLoan_accounts[i].initial_amt = vehicleLoan_accounts[i].initial_amt + this.transaction_amt
+            }
+        }
+
+        console.log(`Amount ${this.transaction_amt} deposited For Vehicle Loan Account`)
+    }
+
+    balance()
+    {
+        let cur_date = new Date()
+    
+        for(let i=0;i<vehicleLoan_accounts.length;i++)
+        {
+            if(vehicleLoan_accounts[i].userName==this.user)
+            {
+                let pre_date = vehicleLoan_accounts[i].date
+                let pre_year = pre_date.getFullYear()
+                let cur_year = cur_date.getFullYear()
+                let diff = cur_year -  pre_year
+                
+                let intrest = (vehicleLoan_accounts[i].initial_amt*diff*13.5)/100
+                let total_balance = vehicleLoan_accounts[i].initial_amt + intrest
+                console.log(`Your total balance in Vehicle loan account is ${total_balance}`)
+
+            }
+        }
+ 
+    }
+}
+
+class PersonalLoan
+{
+    constructor(user,transaction_amt)
+    {
+        this.user = user
+        this.transaction_amt = transaction_amt
+    }
+
+    deposit()
+    {
+            database.forEach((item)=>{
+            if(item.userName=="Prasad")
+            {
+                personalLoan_accounts.push(item)
+            }
+        })
+
+
+        for(let i=0;i<personalLoan_accounts.length;i++)
+        {
+            if([i].userName==this.user)
+            {
+                personalLoan_accounts[i].initial_amt = personalLoan_accounts[i].initial_amt + this.transaction_amt
+            }
+        }
+
+        console.log(`Amount ${this.transaction_amt} deposited For Home Loan Account`)
         
-        if(this.type=="fixed")
+        console.log(homeLoan_accounts)
+    }
+
+    balance()
+    {
+        let cur_date = new Date()
+    
+        for(let i=0;i<personalLoan_accounts.length;i++)
         {
-            let intrest = (this.initial_amt*diff*6.5)/100
-            let total_balance = this.initial_amt + intrest
-            console.log(`Your total balance in fixed account is ${total_balance}`)
-        }else{
-            let intrest = (this.initial_amt*diff*4.5)/100
-            let total_balance = this.initial_amt + intrest
-            console.log(`Your total balance in recurring account is ${total_balance}`)
+            if(personalLoan_accounts[i].userName==this.user)
+            {
+                let pre_date = personalLoan_accounts[i].date
+                let pre_year = pre_date.getFullYear()
+                let cur_year = cur_date.getFullYear()
+                let diff = cur_year -  pre_year
+                
+                let intrest = (personalLoan_accounts[i].initial_amt*diff*8.5)/100
+                let total_balance = personalLoan_accounts[i].initial_amt + intrest
+                console.log(`Your total balance in Personal loan account is ${total_balance}`)
+
+            }
         }
+ 
     }
+
 }
 
 
-
-class fixed_recurr_deposit extends fixed_recurr
+class Account_manager
 {
-    constructor(transaction_amt,acc_holder,initial_amt,email,phone,date)
+    savings_list()
     {
-        super(acc_holder,initial_amt,email,phone,date)
-        this.transaction_amt = transaction_amt
+        console.log(savings_accounts)
     }
 
-    deposit()
+    currrent_list()
     {
-        this.initial_amt = this.initial_amt + this.transaction_amt
-        console.log(`balance after deposit is ${this.initial_amt}`)
-        statement.push(`\nAccount credited with ${this.transaction_amt} on ${new Date()}`)
-    }
-}
-
-
-
-class Loan extends Bank
-{
-    constructor(transaction_amt,type,acc_holder,initial_amt,email,phone,date)
-    {
-        super(acc_holder,initial_amt,email,phone,date)
-        this.transaction_amt = transaction_amt
-        this.type = type
+        console.log(current_accounts)
     }
 
-    deposit()
+    fixed_list()
     {
-        if(this.type=="house")
-        {
-            let intrest = 13
-            let amt = (this.initial_amt*intrest*3.5)/100
-            console.log(`Total house loan amount is ${amt}`)
-        }else if(this.type=="vehicle")
-        {
-            let intrest = 16
-            let amt = (this.initial_amt*intrest*3.5)/100
-            console.log(`Total vehicle loan amount is ${amt}`)
-        }else
-        {
-            let intrest = 10
-            let amt = (this.initial_amt*intrest*3.5)/100
-            console.log(`Total personal loan amount is ${amt}`)
-        }
+        console.log(current_accounts)
     }
 
-}
-
-class Account_Manager extends Bank
-{
-    constructor(acc_holder,initial_amt,email,phone,date)
+    recurring_list()
     {
-        super(acc_holder,initial_amt,email,phone,date)
+        console.log(recurr_acc)
     }
 
-    Account_details()
+    home_list()
     {
-        console.log(this)
+        console.log(homeLoan_accounts)
     }
 
-    Account_statement()
+    vehicle_list()
     {
-        console.log(`Account statement is ${statement}`)
+        console.log(vehicleLoan_accounts)
     }
 
-    Account_balance()
+    personal_list()
     {
-        console.log(`Account balance is ${this.initial_amt}`)
+        console.log(personalLoan_accounts)
     }
 }
 
-const statement = []
 
-acc_prasad = new Bank("Prasad",40000,"Prasad@gmail.com",90005600)   //to create new account
-console.log(acc_prasad)
-
-casa_depo = new Casa_deposit(1000,"Parsad",40000,"Prasad@gmail.com",90005600)  //casa deposit
-casa_depo.deposit()
-
-casa_depo = new Casa_deposit(1000,"Parsad",40000,"Prasad@gmail.com",90005600) //casa withdrawal
-casa_depo.withdrawal()
-
-casa = new Casa("Prasad",40000,"Prasad@gmail.com",90005600,"current")      //csa balance current after adding interest
-casa.balance()
-
-casa = new Casa("Prasad",40000,"Prasad@gmail.com",90005600,"savings")      //csa balance savings after adding intrest
-casa.balance()
-
-fixed_b = new fixed_recurr("Prasad",40000,"Prasad@gmail.com",90005600,"fixed")         //fixed account balance with interest
-fixed_b.balance()
-
-rcc_b = new fixed_recurr("Prasad",40000,"Prasad@gmail.com",90005600,"recurring")      //recurring account balance with interest
-rcc_b.balance()
-
-fc = new fixed_recurr_deposit(1000,"Parsad",40000,"Prasad@gmail.com",90005600)  //fixed recurring deposit
-fc.deposit(5000)
-
-loan = new Loan(100000,"home","Prasad",40000,"Prasad@gmail.com",90005600)   //home personal and vehicle after adding intrest
-loan.deposit()
-
-loan = new Loan(100000,"vehicle","Prasad",40000,"Prasad@gmail.com",90005600)   //vehicle personal and vehicle after adding intrest
-loan.deposit()
-
-loan = new Loan(100000,"personal","Prasad",40000,"Prasad@gmail.com",90005600)   //personal personal and vehicle after adding intrest
-loan.deposit()
+const person1 = new Bank("Prasad",1,"prasad@gmail.com")
+const person2 = new Bank("Ram",20000,"Ram@gmail.com")
+let count1 = person1.add()
+let count2 = person2.add()
+console.log(database[count2-1].userName)
 
 
-acc_man = new Account_Manager("Prasad",40000,"Prasad@gmail.com",90005600)
-acc_man.Account_details()
-acc_man.Account_statement()
+const savings_acc = new Savings("Prasad",10000,[])
+savings_acc.deposit()
+savings_acc.balance()
+savings_acc.withdrawal()
+
+const current_acc = new Current("Prasad",2000,[])
+current_acc.deposit()
+current_acc.balance()
+current_acc.withdrawal()
+
+const fixed_acc = new Fixed("Prasad",50000,[])
+fixed_acc.deposit()
+fixed_acc.balance()
+
+const recurr_acc = new Recurring("Prasad",90000,[])
+recurr_acc.deposit()
+recurr_acc.balance()
+
+const home_acc = new homeLoan("Prasad",50000,[])
+home_acc.deposit()
+home_acc.balance()
+
+const vehicle_acc = new VehicleLoan("Prasad",50000,[])
+vehicle_acc.deposit()
+vehicle_acc.balance()
+
+const personal_acc = new PersonalLoan("Prasad",50000,[])
+personal_acc.deposit()
+personal_acc.balance()
+
+const manager = new Account_manager()
+manager.savings_list()
