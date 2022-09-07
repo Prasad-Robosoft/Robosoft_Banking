@@ -31,7 +31,7 @@ class Bank{                                             //account creation
 }
 
 
-class Savings {                                         //operations for savings account
+class Savings {                                      //has features of depositing, withdrawal and checking balance
 
     constructor(user,transaction_amt)
     {
@@ -199,7 +199,7 @@ class Current                                   //has features of depositing, wi
 }
 
 
-class Fixed                                                         //has features of depositing, withdrawal and checking balance
+class Fixed                                                         //has features of depositing and checking balance
 {
     constructor(user,transaction_amt)
     {
@@ -571,7 +571,7 @@ const personal_acc = new PersonalLoan("Prasad",50000)
 personal_acc.deposit()
 personal_acc.balance()
 
-const manager = new Account_manager([])
+const manager = new Account_manager()
 manager.savings_list()
 manager.currrent_list()
 manager.fixed_list()
