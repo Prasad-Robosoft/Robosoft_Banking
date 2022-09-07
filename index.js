@@ -31,7 +31,7 @@ class Bank{                                             //account creation
 }
 
 
-class Savings {                                      //has features of depositing, withdrawal and checking balance
+class Savings {                                         //operations for savings account
 
     constructor(user,transaction_amt)
     {
@@ -199,7 +199,7 @@ class Current                                   //has features of depositing, wi
 }
 
 
-class Fixed                                                         //has features of depositing and checking balance
+class Fixed                                                         //has features of depositing, withdrawal and checking balance
 {
     constructor(user,transaction_amt)
     {
@@ -499,37 +499,37 @@ class Account_manager //Gives list all accounts in perticular type including sta
 {
     savings_list()
     {
-        console.log(savings_accounts)
+        console.log("savings account list are",savings_accounts)
     }
 
     currrent_list()
     {
-        console.log(current_accounts)
+        console.log("current account list are",current_accounts)
     }
 
     fixed_list()
     {
-        console.log(current_accounts)
+        console.log("fixed list are",fixed_acc)
     }
 
     recurring_list()
     {
-        console.log(recurr_acc)
+        console.log("recurring account list are",recurr_acc)
     }
 
     home_list()
     {
-        console.log(homeLoan_accounts)
+        console.log("home loan list are",homeLoan_accounts)
     }
 
     vehicle_list()
     {
-        console.log(vehicleLoan_accounts)
+        console.log("vehicle loan list are",vehicleLoan_accounts)
     }
 
     personal_list()
     {
-        console.log(personalLoan_accounts)
+        console.log("personal loan list are",personalLoan_accounts)
     }
 }
 
@@ -546,7 +546,7 @@ savings_acc.deposit()                                           //adding deposit
 savings_acc.balance()                                           //checking balanace
 savings_acc.withdrawal()                                        //debiting cash
 
-const current_acc = new Current("Prasad",2000)
+const current_acc = new Current("Ram",2000)
 current_acc.deposit()
 current_acc.balance()
 current_acc.withdrawal()
@@ -555,7 +555,7 @@ const fixed_acc = new Fixed("Prasad",50000)
 fixed_acc.deposit()
 fixed_acc.balance()
 
-const recurr_acc = new Recurring("Prasad",90000)
+const recurr_acc = new Recurring("Ram",90000)
 recurr_acc.deposit()
 recurr_acc.balance()
 
@@ -563,7 +563,7 @@ const home_acc = new homeLoan("Prasad",50000)
 home_acc.deposit()
 home_acc.balance()
 
-const vehicle_acc = new VehicleLoan("Prasad",50000)
+const vehicle_acc = new VehicleLoan("Ram",50000)
 vehicle_acc.deposit()
 vehicle_acc.balance()
 
@@ -571,7 +571,7 @@ const personal_acc = new PersonalLoan("Prasad",50000)
 personal_acc.deposit()
 personal_acc.balance()
 
-const manager = new Account_manager()
+const manager = new Account_manager([])
 manager.savings_list()
 manager.currrent_list()
 manager.fixed_list()
